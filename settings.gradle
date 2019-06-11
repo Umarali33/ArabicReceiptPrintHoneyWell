@@ -1,1 +1,1 @@
-include ':app'
+include ':app', ':hsm-android-print'

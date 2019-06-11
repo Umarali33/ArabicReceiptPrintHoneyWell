@@ -1,18 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
+    <Button
+        android:id="@+id/print"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="Print"
+        tools:layout_editor_absoluteX="161dp"
+        tools:layout_editor_absoluteY="601dp" />
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="331dp"
+        android:layout_height="84dp"
+        android:ems="10"
+        android:gravity="start|top"
+        android:hint="Your Message"
+        android:inputType="textMultiLine"
+        tools:layout_editor_absoluteX="40dp"
+        tools:layout_editor_absoluteY="385dp"
+        tools:text="ا ب ت ث ج ح خ" />
+
+    <EditText
+        android:id="@+id/printerId"
+        android:layout_width="336dp"
+        android:layout_height="51dp"
+        android:ems="10"
+        android:hint="Printer Id"
+        android:inputType="textPersonName"
+        tools:layout_editor_absoluteX="38dp"
+        tools:layout_editor_absoluteY="53dp" />
+
+    <EditText
+        android:id="@+id/macAddress"
+        android:layout_width="339dp"
+        android:layout_height="52dp"
+        android:ems="10"
+        android:hint="MAC Address"
+        android:inputType="textPersonName"
+        tools:layout_editor_absoluteX="35dp"
+        tools:layout_editor_absoluteY="113dp" />
 
 </android.support.constraint.ConstraintLayout>
