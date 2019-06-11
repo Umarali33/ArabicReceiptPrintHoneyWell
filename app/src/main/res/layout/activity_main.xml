@@ -1,31 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/print"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/linearLayoutInput"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Print"
-        tools:layout_editor_absoluteX="161dp"
-        tools:layout_editor_absoluteY="601dp" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/editText"
-        android:layout_width="331dp"
-        android:layout_height="84dp"
-        android:ems="10"
-        android:gravity="start|top"
-        android:hint="Your Message"
-        android:inputType="textMultiLine"
-        tools:layout_editor_absoluteX="40dp"
-        tools:layout_editor_absoluteY="385dp"
-        tools:text="ا ب ت ث ج ح خ" />
 
-    <EditText
+        <EditText
         android:id="@+id/printerId"
         android:layout_width="336dp"
         android:layout_height="51dp"
@@ -45,4 +35,24 @@
         tools:layout_editor_absoluteX="35dp"
         tools:layout_editor_absoluteY="113dp" />
 
-</android.support.constraint.ConstraintLayout>
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="331dp"
+            android:layout_height="84dp"
+            android:ems="10"
+            android:gravity="start|top"
+            android:hint="Your Message"
+            android:inputType="textMultiLine"
+            tools:layout_editor_absoluteX="40dp"
+            tools:layout_editor_absoluteY="385dp"
+            tools:text="ا ب ت ث ج ح خ" />
+
+        <Button
+            android:id="@+id/print"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Print"
+            tools:layout_editor_absoluteX="161dp"
+            tools:layout_editor_absoluteY="601dp" />
+    </LinearLayout>
+</RelativeLayout>

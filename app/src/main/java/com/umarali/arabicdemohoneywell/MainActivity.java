@@ -1,8 +1,10 @@
 package com.umarali.arabicdemohoneywell;
 
+import android.content.res.AssetManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,12 +14,17 @@ import com.honeywell.mobility.print.LinePrinterException;
 import com.honeywell.mobility.print.PrintProgressEvent;
 import com.honeywell.mobility.print.PrintProgressListener;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 
 
 public class MainActivity extends AppCompatActivity {
     EditText editText, macAddress, printerId;
     Button btn;
+    private String jsonCmdAttribStr = null;
+    private String base64LogoPng = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,12 +36,66 @@ public class MainActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                readAssetFiles();
                 PrintTask printTask = new PrintTask();
                 printTask.execute(printerId.getText().toString(), macAddress.getText().toString());
             }
         });
     }
 
+    private void readAssetFiles() {
+        InputStream input = null;
+        ByteArrayOutputStream output = null;
+        AssetManager assetManager = getAssets();
+        String[] files = {"printer_profiles.JSON", "honeywell_logo.bmp"};
+        int fileIndex = 0;
+        int initialBufferSize;
+
+        try {
+            for (String filename : files) {
+                input = assetManager.open(filename);
+                initialBufferSize = (fileIndex == 0) ? 8000 : 2500;
+                output = new ByteArrayOutputStream(initialBufferSize);
+
+                byte[] buf = new byte[1024];
+                int len;
+                while ((len = input.read(buf)) > 0) {
+                    output.write(buf, 0, len);
+                }
+                input.close();
+                input = null;
+
+                output.flush();
+                output.close();
+                switch (fileIndex) {
+                    case 0:
+                        jsonCmdAttribStr = output.toString();
+                        break;
+                    case 1:
+                        base64LogoPng = Base64.encodeToString(output.toByteArray(), Base64.DEFAULT);
+                        break;
+                }
+
+                fileIndex++;
+                output = null;
+            }
+        } catch (Exception ex) {
+            editText.append("Error reading asset file: " + files[fileIndex]);
+        } finally {
+            try {
+                if (input != null) {
+                    input.close();
+                    input = null;
+                }
+
+                if (output != null) {
+                    output.close();
+                    output = null;
+                }
+            } catch (IOException e) {
+            }
+        }
+    }
     class PrintTask extends AsyncTask<String, Integer, String> {
         /**
          * This method runs on a background thread. The specified parameters
@@ -94,7 +155,8 @@ public class MainActivity extends AppCompatActivity {
 
 
                 File profiles = new File(getExternalFilesDir(null), "printer_profiles.JSON");
-                lp = new LinePrinter(profiles.getAbsolutePath(), sPrinterID,
+                //lp = new LinePrinter(profiles.getAbsolutePath(), sPrinterID,"bt://" + sPrinterAddr, exSettings);
+                lp = new LinePrinter(jsonCmdAttribStr, sPrinterID,
                         "bt://" + sPrinterAddr, exSettings);
 
                 lp.addPrintProgressListener(new PrintProgressListener() {
@@ -107,8 +169,10 @@ public class MainActivity extends AppCompatActivity {
                 lp.connect();  // Connects to the printer
 
                 lp.setBold(true);   // Sets bold font.
-                lp.write("SALES ORDER");
+                lp.write("SALES ORDER - طلب المبيعات");
                 lp.setBold(false);  // Returns to normal font.
+                lp.newLine(2);
+                lp.write(editText.getText().toString());
                 lp.newLine(2);
                 lp.write(" PRD. DESCRIPT.   PRC.  QTY.    NET.");
                 lp.newLine(2);
